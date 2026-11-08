@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Özel Fotoğraf</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #000000 50%, #1a1a1a 75%, #ff6b35 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%);
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(255, 107, 53, 0.5);
+            overflow: hidden;
+            animation: fadeIn 1s ease-in;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 107, 53, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+
+        .compliment-section {
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+            text-align: center;
+            border-bottom: 3px solid #ff6b35;
+        }
+
+
+        .compliment-section p {
+            color: #ffd700;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .image-container {
+            padding: 50px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(255, 107, 53, 0.3) 100%);
+        }
+
+        .image-wrapper {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 5px solid #ff6b35;
+        }
+
+        .image-wrapper:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.8);
+        }
+
+        .image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b35, #ff8c42, #ff6b35, #000000);
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s ease infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-width: 100%;
+            object-fit: contain;
+            animation: imageLoad 0.8s ease-in;
+        }
+
+        @keyframes imageLoad {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .footer {
+            padding: 35px 30px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(255, 107, 53, 0.3) 100%);
+            color: #ffd700;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .footer .signature {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 107, 53, 0.9);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.5);
+            transition: transform 0.3s ease;
+            z-index: 100;
+            font-size: 24px;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 140, 66, 0.95);
+        }
+
+        .music-control.playing {
+            background: rgba(255, 107, 53, 0.9);
+            animation: pulse 2s ease infinite;
+            box-shadow: 0 5px 30px rgba(255, 107, 53, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+
+            .compliment-section {
+                padding: 25px 20px;
+            }
+
+
+            .compliment-section p {
+                font-size: 1rem;
+            }
+
+            .image-container {
+                padding: 30px 20px;
+            }
+
+            .image-wrapper {
+                max-width: 100%;
+            }
+
+            .footer {
+                padding: 25px 20px;
+            }
+
+            .footer p {
+                font-size: 0.9rem;
+            }
+
+
+            .music-control {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+
+            .compliment-section p {
+                font-size: 0.95rem;
+            }
+
+            .image-container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">❤️</div>
+    <div class="heart" style="left: 20%; animation-delay: 1s;">💕</div>
+    <div class="heart" style="left: 30%; animation-delay: 2s;">✨</div>
+    <div class="heart" style="left: 40%; animation-delay: 3s;">💖</div>
+    <div class="heart" style="left: 50%; animation-delay: 4s;">💗</div>
+    <div class="heart" style="left: 60%; animation-delay: 5s;">💝</div>
+    <div class="heart" style="left: 70%; animation-delay: 0.5s;">❤️</div>
+    <div class="heart" style="left: 80%; animation-delay: 1.5s;">💕</div>
+    <div class="heart" style="left: 90%; animation-delay: 2.5s;">✨</div>
+
+
+    <!-- Music Control -->
+    <button class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+    <!-- Hidden Audio Player -->
+    <audio id="backgroundMusic" loop autoplay>
+        <source src="Muazzez-Ersoy-Sevemedim-Kara-Gozlum.mp3" type="audio/mpeg">
+        <source src="Muazzez-Ersoy-Sevemedim-Kara-Gozlum.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container">
+        <div class="compliment-section">
+            <p>"Gözlerin çok müsaitti sevilmeye, azıcık bakıyım derken içine düştüm.."</p>
+        </div>
+        
+        <div class="image-container">
+            <div class="image-wrapper">
+                <img src="d.png" alt="Özel Fotoğraf" loading="lazy">
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p></p>
+        </div>
+    </div>
+
+    <script>
+        let backgroundMusic;
+        let isPlaying = false;
+
+        // Sayfa yüklendiğinde müziği otomatik başlat
+        window.addEventListener('load', function() {
+            backgroundMusic = document.getElementById('backgroundMusic');
+            
+            if (backgroundMusic) {
+                // Müziği baştan başlat
+                backgroundMusic.currentTime = 0;
+                
+                // Otomatik başlatmayı dene
+                setTimeout(() => {
+                    backgroundMusic.play().then(() => {
+                        isPlaying = true;
+                        if (musicBtn) {
+                            musicBtn.textContent = '🎶';
+                            musicBtn.classList.add('playing');
+                        }
+                        console.log('Müzik otomatik başlatıldı');
+                    }).catch(() => {
+                        // Otomatik çalma engellenmiş, kullanıcı etkileşimi bekleniyor
+                        console.log('Otomatik çalma engellendi, kullanıcı etkileşimi bekleniyor');
+                        
+                        // İlk tıklamada müziği başlat
+                        const startMusicOnClick = function() {
+                            if (backgroundMusic && !isPlaying) {
+                                backgroundMusic.currentTime = 0;
+                                backgroundMusic.play().then(() => {
+                                    isPlaying = true;
+                                    if (musicBtn) {
+                                        musicBtn.textContent = '🎶';
+                                        musicBtn.classList.add('playing');
+                                    }
+                                    console.log('Müzik kullanıcı etkileşimi ile başlatıldı');
+                                }).catch(err => {
+                                    console.log('Müzik çalma hatası:', err);
+                                });
+                            }
+                        };
+                        
+                        document.addEventListener('click', startMusicOnClick, { once: true });
+                        document.addEventListener('touchstart', startMusicOnClick, { once: true });
+                    });
+                }, 1000);
+            }
+        });
+
+        // Müzik durumu değişikliklerini dinle
+        document.addEventListener('DOMContentLoaded', function() {
+            backgroundMusic = document.getElementById('backgroundMusic');
+            if (backgroundMusic) {
+                backgroundMusic.addEventListener('play', function() {
+                    isPlaying = true;
+                    musicBtn.textContent = '🎶';
+                    musicBtn.classList.add('playing');
+                });
+                
+                backgroundMusic.addEventListener('pause', function() {
+                    isPlaying = false;
+                    musicBtn.textContent = '🎵';
+                    musicBtn.classList.remove('playing');
+                });
+            }
+        });
+
+        // Music control
+        const musicBtn = document.getElementById('musicBtn');
+
+        function toggleMusic() {
+            if (!backgroundMusic) {
+                backgroundMusic = document.getElementById('backgroundMusic');
+            }
+            
+            if (!backgroundMusic) {
+                alert('Müzik yükleniyor, lütfen bekleyin...');
+                return;
+            }
+
+            if (isPlaying) {
+                backgroundMusic.pause();
+            } else {
+                // Müziği baştan başlat
+                backgroundMusic.currentTime = 0;
+                backgroundMusic.play();
+            }
+        }
+
+        // Create more floating hearts dynamically
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '✨', '🌟'];
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 6 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 2000);
+    </script>
+</body>
+</html>
+
